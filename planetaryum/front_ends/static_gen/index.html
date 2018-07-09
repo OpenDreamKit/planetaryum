@@ -1,0 +1,28 @@
+<!Doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+    <script src="assets/index.js" defer></script>
+  </head>
+  <body>
+    <div id="planetaryum">
+      <header id="header"></header>
+      
+      <section id="notebook">
+	<div id="notebook-info"></div>
+	<div id="notebook-cells"></div>
+      </section>
+
+      <section id="gallery">
+	<thumb
+	  v-for="i in db"
+	  v-bind:nb="i"
+	  v-bind:key="i._id">
+	</thumb>
+      </section>
+      
+      <footer id="footer"></footer>
+    </div>
+  </body>
+</html>
