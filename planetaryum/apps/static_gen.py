@@ -5,7 +5,8 @@ from pathlib import Path
 
 class StaticGen():
     def __init__(self, reader, out_dir, builder, template_file=None):
-        self.builder = StaticHTMLBuilder(reader, out_dir, template_file) >> builder
+        self.builder = StaticHTMLBuilder(reader, out_dir, template_file,
+                                             thumbnails=True, write_css=True) >> builder
         
     def build(self):
         self.builder.run()

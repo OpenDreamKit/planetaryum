@@ -15,7 +15,7 @@ setup(
     keywords='jupyter web',
     packages=find_packages(),
     include_package_data=True,
-    install_requires=['jupyter', 'docopt'],
+    install_requires=['jupyter', 'docopt', 'Pillow'],
     entry_points={
         'console_scripts': [
             'planetaryum = planetaryum.cli:main',

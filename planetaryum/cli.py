@@ -11,12 +11,15 @@ Commands:
 from docopt import docopt
 from subprocess import call
 
+class UnknownCommand(RuntimeError):
+    pass
+
 def run_sub(cmd, args):
     if cmd == 'static':
         from .apps import static_gen
         return static_gen.cli(docopt(static_gen.cli.__doc__, argv=args))
     else:
-        raise ValueError('Unknown command')
+        raise UnknownCommand
 
 def main():
     args = docopt(__doc__, help=False, options_first=True)
@@ -34,5 +37,5 @@ def main():
         argv = [args['<command>']] + args['<args>']
         try:
             run_sub(args['<command>'], argv)
-        except ValueError:
+        except UnknownCommand:
             exit("%r is not a planetaryum command. See 'planetaryum help'." % args['<command>'])

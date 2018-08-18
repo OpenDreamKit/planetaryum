@@ -1,4 +1,5 @@
-import json
+import json, base64, io
+from PIL import Image
 from nbconvert import HTMLExporter
 
 class Extractor():
@@ -29,11 +30,33 @@ class MetadataExtractor(JSONExtractor):
     '''
     def __init__(self, name=None, thumbnails=False):
         super().__init__(name)
-        self.thumbnails = thumbnails
+        if thumbnails is True:
+            self.thumbnails = (250,250)
+        else:
+            self.thumbnails = thumbnails
 
     def __call__(self, nb, name):
-        # TODO: extract thumbnails
-        return super().__call__(nb, name)['metadata']
+        nb = super().__call__(nb, name)
+        meta = nb['metadata']
+        # Extract figures
+        if self.thumbnails:
+            thumbs = meta['thumbs'] = []
+            for cell in nb['cells']:
+                for out in cell.get('outputs', []):
+                    if out.get('output_type') == 'display_data':
+                        for key, data in out.get('data', {}).items():
+                            if key.startswith('image/'):
+                                try:
+                                    t = Image.open(io.BytesIO(base64.b64decode(data)))
+                                except RuntimeError as e:
+                                    print("Can't decode image of type: %s." % key)
+                                    continue
+                                t.thumbnail(self.thumbnails)
+                                out = io.BytesIO()
+                                t.save(out, format="PNG")
+                                thumbs.append('data:image/png;base64,'
+                                                  + base64.b64encode(out.getbuffer()).decode())
+        return meta
     
 class BlobExtractor(Extractor):
     '''

@@ -62,11 +62,12 @@ class StaticHTMLBuilder(Builder):
     Build static HTML files from Jupyter notebooks
     '''
 
-    def __init__(self, reader, out_dir, template_file=None):
+    def __init__(self, reader, out_dir, template_file=None, thumbnails=True, write_css=False):
         self.reader = reader
         self.out = Path(out_dir)
+        self.write_css = write_css
         self.extractors = [
-            ex.MetadataExtractor('meta'),
+            ex.MetadataExtractor('meta', thumbnails=thumbnails),
             ex.HTMLExtractor('html', template_file=template_file),
             ]
 
@@ -75,10 +76,12 @@ class StaticHTMLBuilder(Builder):
         nbs = self.out / 'notebooks'
         nbs.mkdir(parents=True, exist_ok=True)
         meta = []
+        css = None
         
         for i, data in enumerate(ex.extract(self.reader, self.extractors)):
             path = nbs / (data['name'] + '.html')
             path.write_text(data['html']['html'])
+            css = data['html']['meta']['inlining']['css']
             
             meta.append({
                 '_id' : 'notebook/%d/%s' % (i, data['name']),
@@ -91,5 +94,12 @@ class StaticHTMLBuilder(Builder):
         with (self.out / 'meta.json').open('w') as f:
             json.dump(meta, f)
 
+        if self.write_css and css:
+            assets = self.out / 'assets' / 'css'
+            assets.mkdir(parents=True, exist_ok=True)
+            for i, sheet in enumerate(css):
+                path = assets / ('nbconvert-%d.css' % i)
+                path.write_text(sheet)
+            
         return state
     
