@@ -2,27 +2,33 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
     <script src="assets/index.js" defer></script>
+    <link rel="stylesheet" href="assets/css/nbconvert-0.css" />
+    <link rel="stylesheet" href="assets/css/nbconvert-1.css" />
+    <link rel="stylesheet" href="assets/css/nbconvert-2.css" />
   </head>
   <body>
     <div id="planetaryum">
-      <header id="header"></header>
-      
-      <section id="notebook">
-	<div id="notebook-info"></div>
-	<div id="notebook-cells"></div>
-      </section>
+      <!--plyum-header></plyum-header>
 
-      <section id="gallery">
-	<thumb
+      <plyum-notebook>
+	<plyum-notebook-info></plyum-notebook-info>
+	<plyum-notebook-cells></plyum-notebook-cells>
+      </plyum-notebook-->
+
+	<div id="gallery">
+	<plyum-thumb
 	  v-for="i in db"
 	  v-bind:nb="i"
 	  v-bind:key="i._id">
-	</thumb>
-      </section>
-      
-      <footer id="footer"></footer>
+	</plyum-thumb>
+	</div>
+
+	<router-view></router-view>
+	
+      <!--plyum-footer></plyum-footer-->
     </div>
   </body>
 </html>
