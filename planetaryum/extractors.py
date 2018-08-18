@@ -37,7 +37,7 @@ class MetadataExtractor(JSONExtractor):
 
     def __call__(self, nb, name):
         nb = super().__call__(nb, name)
-        meta = nb['metadata']
+        meta = nb.get('metadata', {})
         # Extract figures
         if self.thumbnails:
             thumbs = meta['thumbs'] = []
@@ -45,19 +45,22 @@ class MetadataExtractor(JSONExtractor):
                 for out in cell.get('outputs', []):
                     if out.get('output_type') == 'display_data':
                         for key, data in out.get('data', {}).items():
-                            if key.startswith('image/'):
-                                try:
-                                    t = Image.open(io.BytesIO(base64.b64decode(data)))
-                                except RuntimeError as e:
-                                    print("Can't decode image of type: %s." % key)
-                                    continue
-                                t.thumbnail(self.thumbnails)
-                                out = io.BytesIO()
-                                t.save(out, format="PNG")
-                                thumbs.append('data:image/png;base64,'
-                                                  + base64.b64encode(out.getbuffer()).decode())
+                            if key.lower() in ('image/png', 'image/jpeg'):
+                                if type(data) is not list:
+                                    data = [data]
+                                for d in data:
+                                    try:
+                                        t = Image.open(io.BytesIO(base64.b64decode(d)))
+                                    except RuntimeError as e:
+                                        print("Can't decode image of type: %s." % key)
+                                        continue
+                                    t.thumbnail(self.thumbnails)
+                                    out = io.BytesIO()
+                                    t.save(out, format="PNG")
+                                    thumbs.append('data:image/png;base64,'
+                                                      + base64.b64encode(out.getbuffer()).decode())
         return meta
-    
+
 class BlobExtractor(Extractor):
     '''
     Return the notebook as raw bytes.
