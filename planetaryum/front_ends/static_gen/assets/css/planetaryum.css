@@ -1,0 +1,64 @@
+/************ The NB thumb gallery *********/
+#gallery {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+}
+.thumb {
+    margin: 10px;
+}
+.thumb a {
+    display: block;
+}
+.thumb .figure {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: solid thin #eee;
+    transition: border-color 0.3s;
+}
+.thumb:hover .figure, .router-link-active .figure {
+    border-color: #23527c;
+}
+.thumb img {
+    width: auto;
+}
+
+/* Specific notebook closed */
+.expanded .thumb .figure {
+    height: 200px;
+    width: 200px;
+}
+.expanded .thumb .caption {
+    text-align: center;
+    font-size: 150%;
+    margin: 0.2ex 0;
+    max-width: 200px;
+    overflow: hidden;
+}
+.thumb img {
+    max-width: 200px;
+    max-height: 200px;
+}
+
+/* Specific to notebook open */
+#gallery.contracted {
+    flex-flow: row nowrap;
+    justify-content: flex-start;
+    overflow: auto;
+    border-bottom: solid thin #ccc;
+}
+.contracted .thumb a {
+    display: flex;
+    align-items: center;
+    height: 2em;
+}
+.contracted .thumb .caption {
+    font-size: 120%;
+    margin: 2px;
+    white-space: nowrap;
+}
+.contracted .thumb img {
+    max-width: 2em;
+    max-height: 2em;
+}

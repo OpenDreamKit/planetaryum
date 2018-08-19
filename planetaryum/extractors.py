@@ -31,7 +31,7 @@ class MetadataExtractor(JSONExtractor):
     def __init__(self, name=None, thumbnails=False):
         super().__init__(name)
         if thumbnails is True:
-            self.thumbnails = (250,250)
+            self.thumbnails = (200,200)
         else:
             self.thumbnails = thumbnails
 

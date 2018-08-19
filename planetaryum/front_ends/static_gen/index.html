@@ -8,26 +8,13 @@
     <link rel="stylesheet" href="assets/css/nbconvert-0.css" />
     <link rel="stylesheet" href="assets/css/nbconvert-1.css" />
     <link rel="stylesheet" href="assets/css/nbconvert-2.css" />
+    <link rel="stylesheet" href="assets/css/planetaryum.css" />
   </head>
   <body>
     <div id="planetaryum">
-      <!--plyum-header></plyum-header>
-
-      <plyum-notebook>
-	<plyum-notebook-info></plyum-notebook-info>
-	<plyum-notebook-cells></plyum-notebook-cells>
-      </plyum-notebook-->
-
-	<div id="gallery">
-	<plyum-thumb
-	  v-for="i in db"
-	  v-bind:nb="i"
-	  v-bind:key="i._id">
-	</plyum-thumb>
-	</div>
-
-	<router-view></router-view>
-	
+      <!--plyum-header></plyum-header-->
+      <plyum-gallery :nbs="db"></plyum-gallery>
+      <router-view></router-view>
       <!--plyum-footer></plyum-footer-->
     </div>
   </body>
