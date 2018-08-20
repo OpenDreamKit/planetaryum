@@ -1,3 +1,45 @@
+/************ Generalities *********/
+#header .title, #header .description {
+    text-align: center;
+    max-width: 1000px;
+    margin: auto;
+}
+#header .title {
+    padding-top: 10px;
+}
+#header .title a {
+    color: black;
+}
+@media(min-width: 1300px) {
+    #header .contribute {
+	position: absolute;
+	right: 0;
+	top: 0;
+    }
+}
+#header .contribute, #header contribute:active, #header contribute:visited {
+    display: block;
+    padding: 5px;
+    font-weight: bold;
+    color: white;
+    background-color: #66f;
+}
+#header .contribute:hover {
+    color: white;
+    background-color: #55f;
+    box-shadow: 0 0 1px 1px #33f;
+}
+.author {
+    font-size: 80%;
+    color: #888;
+}
+footer {
+    text-align: center;
+    margin: auto;
+    max-width: 1000px;
+    margin-top: 4em;
+}
+
 /************ The NB thumb gallery *********/
 #gallery {
     display: flex;
@@ -25,6 +67,10 @@
 }
 
 /* Specific notebook closed */
+#gallery.expanded {
+    max-width: 1200px;
+    margin: auto;
+}
 .expanded .thumb .figure {
     height: 200px;
     width: 200px;
@@ -36,9 +82,12 @@
     max-width: 200px;
     overflow: hidden;
 }
-.thumb img {
+.expanded .thumb img {
     max-width: 200px;
     max-height: 200px;
+}
+.expanded .thumb .author {
+    display: block;
 }
 
 /* Specific to notebook open */
@@ -46,6 +95,7 @@
     flex-flow: row nowrap;
     justify-content: flex-start;
     overflow: auto;
+    border-top:    solid thin #ccc;
     border-bottom: solid thin #ccc;
 }
 .contracted .thumb a {
@@ -58,7 +108,50 @@
     margin: 2px;
     white-space: nowrap;
 }
+.contracted .thumb .author {
+    display: none;
+}
 .contracted .thumb img {
     max-width: 2em;
     max-height: 2em;
+}
+
+/************ The notebook view *********/
+#notebook {
+    max-width: 1200px;
+    margin: auto;
+}
+.nb-header {
+    padding: 8px 10px;
+    border-bottom: solid thin #ccc;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;    
+    align-items: center;
+}
+.nb-header .jupyter-logo {
+    margin-right: 1ex;
+}
+.nb-header .title {
+    font-size: 140%;
+}
+.kernel, .i-download, .i-mybinder {
+    display: inline-block;
+    padding: 4px;
+    font-size: 90%;
+    font-weight: bold;
+    white-space: nowrap;
+    margin: 5px 0;
+}
+.i-download, .i-mybinder {
+    margin-left: 5px;
+    border: solid thin black;
+}
+.i-download:hover, .i-mybinder:hover {
+    box-shadow: 0 0 1px 1px #888;
+    text-decoration: none;
+}
+.kernel {
+    color: white;
+    background-color: #66f;
 }

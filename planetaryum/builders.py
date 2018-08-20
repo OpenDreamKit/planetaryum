@@ -62,9 +62,11 @@ class StaticHTMLBuilder(Builder):
     Build static HTML files from Jupyter notebooks
     '''
 
-    def __init__(self, reader, out_dir, template_file=None, thumbnails=True, write_css=False):
+    def __init__(self, reader, out_dir, cmdargs={},
+                     template_file=None, thumbnails=True, write_css=False):
         self.reader = reader
         self.out = Path(out_dir)
+        self.cmdargs = cmdargs
         self.write_css = write_css
         self.extractors = [
             ex.MetadataExtractor('meta', thumbnails=thumbnails),
@@ -75,7 +77,10 @@ class StaticHTMLBuilder(Builder):
         # Write static notebooks
         nbs = self.out / 'notebooks'
         nbs.mkdir(parents=True, exist_ok=True)
-        meta = []
+        meta = {
+            'cmdargs': self.cmdargs,
+            'notebooks': [],
+            }
         css = None
         
         for i, data in enumerate(ex.extract(self.reader, self.extractors)):
@@ -83,9 +88,10 @@ class StaticHTMLBuilder(Builder):
             path.write_text(data['html']['html'])
             css = data['html']['meta']['inlining']['css']
             
-            meta.append({
+            meta['notebooks'].append({
                 '_id' : 'notebook/%d/%s' % (i, data['name']),
                 'name': data['name'],
+                'filename': data['name'] + '.ipynb',
                 'path': str(path.relative_to(self.out)),
                 'meta': data['meta'],
                 })
