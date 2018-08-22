@@ -127,7 +127,7 @@ function populateNBMeta(nb) {
 	    renderMathJax() {
 		console.log('JAX!');
 		this.$nextTick()
-		    .then(() => window.MathJax.Hub.Typeset());
+		    .then(() => window.MathJax.Hub.Queue(['Typeset', MathJax.Hub, 'notebook']));
 	    },
 	},
 	components: {
