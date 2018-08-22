@@ -3,7 +3,7 @@ python: "3.6"
 install:
   - pip install git+https://github.com/OpenDreamKit/planetaryum.git
 script:
-  - planetaryum static
+  - planetaryum static title="A title" baseurl="https://github.com/<user>/<repo>/raw/master/%"
 deploy:
   provider: pages
   local-dir: _site
