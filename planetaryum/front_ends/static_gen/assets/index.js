@@ -108,6 +108,7 @@ function populateNBMeta(nb) {
 	},
 	watch: {
 	    '$route': ['fetchNB', 'setTitle'],
+	    'html': 'renderMathJax',
 	},
 	props: ['nb', 'meta'],
 	template: `<div id="notebook-view">
@@ -122,7 +123,12 @@ function populateNBMeta(nb) {
 	    },
 	    setTitle() {
 		document.title = this.nb.title;
-	    }
+	    },
+	    renderMathJax() {
+		console.log('JAX!');
+		this.$nextTick()
+		    .then(() => window.MathJax.Hub.Typeset());
+	    },
 	},
 	components: {
 	    /* The header, showing info on the notebook */
