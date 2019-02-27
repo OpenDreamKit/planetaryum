@@ -1,5 +1,6 @@
 import json
 from distutils.dir_util import copy_tree
+from shutil import copy
 from pathlib import Path
 from . import extractors as ex
 
@@ -43,6 +44,21 @@ class BuilderChain(Builder):
             return BuilderChain(*self.steps, other)
         else:
             raise ValueError('Expected object of type Builder, found %s' % type(other))
+
+class CopyIPynbBuilder(Builder):
+    '''
+    Copies all notebooks from a reader to a destination folder.
+    '''
+    
+    def __init__(self, reader, dst):
+        self.reader = reader
+        self.dst = Path(dst)
+
+    def run(self, state={}):
+        self.dst.mkdir(parents=True, exist_ok=True)
+        for nb, name in self.reader:
+            copy(nb, self.dst)
+        return state
 
 class CopyTreeBuilder(Builder):
     '''
@@ -89,7 +105,7 @@ class StaticHTMLBuilder(Builder):
             css = data['html']['meta']['inlining']['css']
             
             meta['notebooks'].append({
-                '_id' : 'notebook/%d/%s' % (i, data['name']),
+                '_id' : 'notebook/%s' % data['name'],
                 'name': data['name'],
                 'filename': data['name'] + '.ipynb',
                 'path': str(path.relative_to(self.out)),

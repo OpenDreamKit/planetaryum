@@ -142,7 +142,7 @@ function populateNBMeta(nb) {
   </span>
   <span class="icons">
     <span class="kernel" title="kernel">{{ nb.meta.kernelspec.display_name }}</span>
-    <a v-if="meta.baseurl" :href="downloadLink()" target="_blank">
+    <a :href="downloadLink()" :download="nb.filename">
       <span class="i-download" title="Download">⬇ Download</span>
     </a>
     <a v-if="meta.binderurl" :href="mybinderLink(nb)" target="_blank">
@@ -154,7 +154,7 @@ function populateNBMeta(nb) {
 </div>`,
 		methods: {
 		    downloadLink() {
-			return this.meta.baseurl.replace('%', this.nb.filename);
+			return 'ipynbs/' + this.nb.filename;
 		    },
 		    mybinderLink(nb) {
 			return this.meta.binderurl.replace('%', this.nb.filename);

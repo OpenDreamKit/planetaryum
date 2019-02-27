@@ -1,6 +1,6 @@
 from ..builders import StaticHTMLBuilder
 from ..readers import DirReader
-from ..builders import CopyTreeBuilder
+from ..builders import CopyTreeBuilder, CopyIPynbBuilder
 from pathlib import Path
 
 class StaticGen():
@@ -24,7 +24,8 @@ Options:
 Front end arguments are passed as is to the front-end.
 """
     indir, outdir = args['--input'], args['--output']
-    reader = DirReader(indir)
-    builder = CopyTreeBuilder(Path(__file__).parent.parent / 'front_ends/static_gen',
-                                  outdir)
-    StaticGen(reader, outdir, builder, cmdargs=args['<front-end-args>']).build()
+    reader1 = DirReader(indir)
+    reader2 = DirReader(indir)
+    builder = (CopyTreeBuilder(Path(__file__).parent.parent / 'front_ends/static_gen', outdir)
+                   >> CopyIPynbBuilder(reader1, Path(outdir) / 'ipynbs'))
+    StaticGen(reader2, outdir, builder, cmdargs=args['<front-end-args>']).build()
